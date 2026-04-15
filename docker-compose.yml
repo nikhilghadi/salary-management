@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: salary_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: salary_manager_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: rails_backend
+    command: bash -c "rm -f tmp/pids/server.pid && bundle install && rails db:create db:migrate && bundle exec rails s -b 0.0.0.0 -e development"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: development
+
+  frontend:
+    build: ./frontend
+    container_name: react_frontend
+    command: npm run dev -- --host
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3001:5173"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

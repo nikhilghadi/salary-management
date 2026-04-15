@@ -1,0 +1,26 @@
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Docker
+docker-compose.override.yml
+
+# Env
+.env
+
+# Node
+frontend/node_modules
+frontend/dist
+
+# Rails
+backend/log/*
+backend/tmp/*
+frontend/node_modules
+backend/storage/*
+backend/.bundle
+backend/vendor/bundle
+
+# DB
+*.sqlite3
