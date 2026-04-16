@@ -10,8 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 0) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_16_025746) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "employees", force: :cascade do |t|
+    t.string "branch_location", limit: 200
+    t.string "country"
+    t.datetime "created_at", null: false
+    t.string "department"
+    t.string "emp_code"
+    t.string "first_name"
+    t.string "job_title"
+    t.string "last_name"
+    t.decimal "salary", precision: 10, scale: 2
+    t.datetime "updated_at", null: false
+  end
 end
