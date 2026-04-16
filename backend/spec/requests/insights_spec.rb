@@ -18,4 +18,14 @@ RSpec.describe "Insights API", type: :request do
       expect(data["avg_salary"]).to eq(50000)
     end
   end
+
+  it "returns empty values if no employees found" do
+    get "/insights/country", params: { country: "America" }
+
+    data = JSON.parse(response.body)
+
+    expect(data["min_salary"]).to be_nil
+    expect(data["max_salary"]).to be_nil
+    expect(data["avg_salary"]).to be_nil
+  end
 end
