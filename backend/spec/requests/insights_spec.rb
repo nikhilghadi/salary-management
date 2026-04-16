@@ -33,10 +33,24 @@ RSpec.describe "Insights API", type: :request do
     create(:employee, country: "India", salary: 30000)
     create(:employee, country: "India", salary: 50000)
     get "/insights/country"
-    p response.body
     expect(response).to have_http_status(:unprocessable_entity)
 
     data = JSON.parse(response.body)
     expect(data["error"]).to eq("country parameter is required")
+  end
+
+  describe "GET /insights/job_title" do
+    it "returns avg salary for job title in a country" do
+      create(:employee, country: "India", job_title: "Engineer", salary: 40000)
+      create(:employee, country: "India", job_title: "Engineer", salary: 60000)
+
+      get "/insights/job_title", params: { country: "India", job_title: "Engineer" }
+
+      expect(response).to have_http_status(:ok)
+
+      data = JSON.parse(response.body)
+
+      expect(data["avg_salary"]).to eq(50000)
+    end
   end
 end
