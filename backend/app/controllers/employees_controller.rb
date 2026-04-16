@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: [:show]
+  before_action :set_employee, only: [:show, :update]
   def index
     employees = Employee.all
     render json: employees
@@ -22,6 +22,17 @@ class EmployeesController < ApplicationController
       render json: { error: "Employee not found" }, status: :not_found
     end
   end
+
+  def update
+    if @employee && @employee.update(employee_params)
+      render json: @employee
+    elsif @employee
+      render json: { errors: @employee.errors.full_messages }, status: :unprocessable_entity
+    else
+      render json: { error: "Employee not found" }, status: :not_found
+    end
+  end
+  
   private
 
   def set_employee
