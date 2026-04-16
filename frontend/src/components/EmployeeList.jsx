@@ -1,12 +1,5 @@
-import { useEffect, useState } from "react";
-import { fetchEmployees } from "../api/client";
 
-export default function EmployeeList() {
-  const [employees, setEmployees] = useState([]);
-
-  useEffect(() => {
-    fetchEmployees().then(setEmployees);
-  }, []);
+export default function EmployeeList({ employees }) {
 
   return (
     <div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createEmployee } from "../api/client";
 
-export default function AddEmployee() {
+export default function AddEmployee({ onEmployeeAdded }) {
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -16,6 +16,7 @@ export default function AddEmployee() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await createEmployee(form);
+    onEmployeeAdded();
     alert("Employee added!");
   };
 
