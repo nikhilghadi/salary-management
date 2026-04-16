@@ -48,4 +48,10 @@ RSpec.describe "Employees API", type: :request do
       expect(data["first_name"]).to eq(employee.first_name)
     end
   end
+
+  it "returns 404 if employee not found" do
+    get "/employees/99999"
+
+    expect(response).to have_http_status(:not_found)
+  end
 end
