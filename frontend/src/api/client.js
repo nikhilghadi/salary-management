@@ -14,3 +14,13 @@ export async function createEmployee(data) {
 
   return res.json();
 }
+
+export async function getCountryInsights(country) {
+  const res = await fetch(`${BASE_URL}/insights/country?country=${country}`);
+  return res.json();
+}
+
+export async function getJobInsights(country, jobTitle) {
+  const res = await fetch(`${BASE_URL}/insights/job_title?country=${country}&job_title=${jobTitle}`);
+  return res.json();
+}
