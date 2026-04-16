@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getCountryInsights, getJobInsights } from "../api/client";
 import { COUNTRIES, JOB_TITLES } from "../constants/options";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 export default function Dashboard() {
   const [country, setCountry] = useState("");
@@ -38,6 +39,14 @@ export default function Dashboard() {
     }
   };
 
+  const chartData = countryData
+  ? [
+      { name: "Min", value: countryData.min_salary },
+      { name: "Avg", value: countryData.avg_salary },
+      { name: "Max", value: countryData.max_salary }
+    ]
+  : [];
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>Dashboard</h1>
@@ -70,16 +79,25 @@ export default function Dashboard() {
       {/* Error */}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {/* Country Insights */}
-      {countryData && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>Country Insights</h3>
-          <p>Min Salary: {countryData.min_salary}</p>
-          <p>Max Salary: {countryData.max_salary}</p>
-          <p>Avg Salary: {countryData.avg_salary}</p>
-        </div>
-      )}
+      <div style={{ marginBottom: "20px" , display: "flex", gap: "50px"}}>
+        <BarChart width={500} height={300} data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="value" />
+        </BarChart>
 
+        {/* Country Insights */}
+        {countryData && (
+          <div style={{ marginTop: "20px" }}>
+            <h3>Country Insights</h3>
+            <p>Min Salary: {countryData.min_salary}</p>
+            <p>Max Salary: {countryData.max_salary}</p>
+            <p>Avg Salary: {countryData.avg_salary}</p>
+          </div>
+        )}
+      </div>
       {/* Job Insights */}
       {jobData && (
         <div style={{ marginTop: "20px" }}>
