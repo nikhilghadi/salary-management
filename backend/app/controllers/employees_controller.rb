@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: [:show, :update]
+  before_action :set_employee, only: [:show, :update, :destroy]
   def index
     employees = Employee.all
     render json: employees
@@ -32,7 +32,18 @@ class EmployeesController < ApplicationController
       render json: { error: "Employee not found" }, status: :not_found
     end
   end
-  
+
+  def destroy
+    if @employee && @employee.destroy
+      render json: { message: "Employee deleted successfully" }, status: :no_content
+    elsif @employee
+      render json: { errors: @employee.errors.full_messages }, status: :unprocessable_entity
+    else
+      render json: { error: "Employee not found" }, status: :not_found
+    end
+  end
+
+
   private
 
   def set_employee
