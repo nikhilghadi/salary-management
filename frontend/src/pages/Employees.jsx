@@ -23,7 +23,7 @@ export default function Employees() {
         Add Employee
       </button>
 
-      <EmployeeTable employees={employees} />
+      <EmployeeTable employees={employees} reload={loadEmployees} />
 
       {showModal && (
         <AddEmployeeModal

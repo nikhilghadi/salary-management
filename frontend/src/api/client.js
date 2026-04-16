@@ -12,7 +12,39 @@ export async function createEmployee(data) {
     body: JSON.stringify({ employee: data })
   });
 
+  const json = await res.json();
+
+  if (!res.ok) {
+    throw json;
+  }
+
+  return json;
+}
+
+export async function getEmployee(id) {
+  const res = await fetch(`http://localhost:3000/employees/${id}`);
   return res.json();
+}
+
+export async function updateEmployee(id, data) {
+  const res = await fetch(`http://localhost:3000/employees/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ employee: data })
+  });
+   const json = await res.json();
+
+  if (!res.ok) {
+    throw json;
+  }
+
+  return json;
+}
+
+export async function deleteEmployee(id) {
+  await fetch(`http://localhost:3000/employees/${id}`, {
+    method: "DELETE"
+  });
 }
 
 export async function getCountryInsights(country) {

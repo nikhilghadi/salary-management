@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { createEmployee } from "../api/client";
+import { createEmployee, updateEmployee} from "../api/client";
 
 export default function AddEmployeeModal({employee, onClose, onSuccess }) {
   const [form, setForm] = useState({});
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     setForm({
+      id: employee?.id || "",
       first_name: employee?.first_name || "",
       last_name: employee?.last_name || "",
       emp_code: employee?.emp_code || "",
@@ -19,16 +20,33 @@ export default function AddEmployeeModal({employee, onClose, onSuccess }) {
   }, [employee]);
   const handleSubmit = async () => {
     if (!form.first_name || !form.salary) {
-      setError("Required fields missing");
+      setErrors(["Required fields missing"]);
       return;
     }
 
-    await createEmployee(form);
-    onSuccess();
+    try {
+      if( form.id){
+        // update flow 
+        await updateEmployee(form.id, form);
+      }else{
+        // create flow
+        await createEmployee(form);
+      }
+      onSuccess();
+    } catch (err) {
+      setErrors(err.errors ||[ "Something went wrong"]);
+    }
   };
 
   return (
     <div style={{ border: "1px solid black", padding: "20px" }}>
+      {errors.length > 0 && (
+        <div style={{ color: "red" }}>
+          {errors.map((e, i) => (
+            <p key={`error_${i}`}>{e}</p>
+          ))}
+        </div>
+      )}
       <h3>Add Employee</h3>
 
       <input placeholder="First Name" value={form.first_name} onChange={e => setForm({...form, first_name: e.target.value})} />
@@ -56,8 +74,6 @@ export default function AddEmployeeModal({employee, onClose, onSuccess }) {
       <input placeholder="Branch Location" value={form.branch_location} onChange={e => setForm({...form, branch_location: e.target.value})} />
 
       <input type="number" placeholder="Salary" value={form.salary} onChange={e => setForm({...form, salary: e.target.value})} />
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <button onClick={handleSubmit}>Submit</button>
       <button onClick={onClose}>Cancel</button>
