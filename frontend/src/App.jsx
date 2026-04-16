@@ -1,28 +1,20 @@
-import { useState, useEffect } from 'react'
 import './App.css'
-import EmployeeList from "./components/EmployeeList";
-import AddEmployee from "./components/AddEmployee";
-import Insights from './components/Insights';
-import { fetchEmployees } from "./api/client";
+import Navbar from "./components/Navbar.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard.jsx";
+import Employees from "./pages/Employees.jsx";
 
 function App() {
-  const [employees, setEmployees] = useState([]);
 
-  const loadEmployees = () => {
-    fetchEmployees().then(setEmployees);
-  };
-
-
-  useEffect(() => {
-    loadEmployees();
-  }, []);
   return (
-    <>
-      <h1>Salary Manager</h1>
-        <EmployeeList employees={employees} />
-        <AddEmployee onEmployeeAdded={loadEmployees} />
-        <Insights/>
-    </>
+    <BrowserRouter>
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/employees" element={<Employees />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
