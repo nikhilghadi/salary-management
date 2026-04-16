@@ -11,5 +11,5 @@ Rails.application.routes.draw do
 
   get "insights/country", to: "insights#country"
   get "insights/job_title", to: "insights#job_title"
-
+  get "insights/median_salary", to: "insights#median_salary"
 end

@@ -63,4 +63,19 @@ RSpec.describe "Insights API", type: :request do
     data = JSON.parse(response.body)
     expect(data["error"]).to eq("country and job_title parameters are required")
   end
+
+  describe "GET /insights/median_salary" do
+    it "returns median salary for a country" do
+      create(:employee, country: "India", salary: 30000)
+      create(:employee, country: "India", salary: 50000)
+      create(:employee, country: "India", salary: 70000)
+
+      get "/insights/median_salary", params: { country: "India" }
+
+      expect(response).to have_http_status(:ok)
+
+      data = JSON.parse(response.body)
+      expect(data["median_salary"]).to eq(50000.0)
+    end
+  end
 end

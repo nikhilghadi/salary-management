@@ -14,4 +14,12 @@ class InsightsController < ApplicationController
     avg_salary = SalaryInsights.for_job_title(params[:country], params[:job_title])
     render json: { avg_salary: avg_salary }
   end
+
+  def median_salary
+    if params[:country].blank?
+      return render json: { error: "country parameter is required" }, status: :unprocessable_entity
+    end
+    insights = SalaryInsights.median_salary(params[:country])
+    render json: insights
+  end
 end
