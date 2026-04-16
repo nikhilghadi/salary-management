@@ -28,4 +28,15 @@ RSpec.describe "Insights API", type: :request do
     expect(data["max_salary"]).to be_nil
     expect(data["avg_salary"]).to be_nil
   end
+
+  it "returns error when country param is missing" do
+    create(:employee, country: "India", salary: 30000)
+    create(:employee, country: "India", salary: 50000)
+    get "/insights/country"
+    p response.body
+    expect(response).to have_http_status(:unprocessable_entity)
+
+    data = JSON.parse(response.body)
+    expect(data["error"]).to eq("country parameter is required")
+  end
 end
