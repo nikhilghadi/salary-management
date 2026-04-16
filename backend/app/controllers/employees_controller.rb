@@ -1,4 +1,5 @@
 class EmployeesController < ApplicationController
+  before_action :set_employee, only: [:show]
   def index
     employees = Employee.all
     render json: employees
@@ -14,7 +15,18 @@ class EmployeesController < ApplicationController
     end
   end
 
+  def show
+    if @employee
+      render json: @employee
+    else
+      render json: { error: "Employee not found" }, status: :not_found
+    end
+  end
   private
+
+  def set_employee
+    @employee = Employee.find(params[:id]) rescue nil
+  end
 
   def employee_params
     params.require(:employee).permit(:first_name, :last_name, :emp_code, :job_title, :country, :branch_location, :department, :salary)
