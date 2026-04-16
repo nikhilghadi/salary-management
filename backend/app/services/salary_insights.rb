@@ -8,4 +8,11 @@ class SalaryInsights
       avg_salary: employees.average(:salary)&.to_f
     }
   end
+
+  def self.for_job_title(country, job_title)
+    employees = Employee.where(country: country, job_title: job_title)
+
+    employees.average(:salary)&.to_f
+    
+  end 
 end

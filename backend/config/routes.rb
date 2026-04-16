@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   resources :employees, only: [:index, :create, :show, :update, :destroy]
 
   get "insights/country", to: "insights#country"
+  get "insights/job_title", to: "insights#job_title"
+
 end
