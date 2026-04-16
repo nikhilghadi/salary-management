@@ -22,4 +22,14 @@ class InsightsController < ApplicationController
     insights = SalaryInsights.median_salary(params[:country])
     render json: insights
   end
+
+  def top_earners
+    if params[:country].blank?
+      return render json: { error: "country parameter is required" }, status: :unprocessable_entity
+    end
+
+    limit = params[:limit] || 5
+    top_earners = SalaryInsights.top_earners(params[:country], limit.to_i)
+    render json: top_earners
+  end
 end

@@ -78,4 +78,21 @@ RSpec.describe "Insights API", type: :request do
       expect(data["median_salary"]).to eq(50000.0)
     end
   end
+
+  describe "GET /insights/top_earners" do
+    it "returns top earners in a country" do
+      create(:employee, country: "India", salary: 30000)
+      create(:employee, country: "India", salary: 70000)
+      create(:employee, country: "India", salary: 90000)
+
+      get "/insights/top_earners", params: { country: "India", limit: 2 }
+
+      expect(response).to have_http_status(:ok)
+
+      data = JSON.parse(response.body)
+
+      expect(data.length).to eq(2)
+      expect(data.first["salary"]).to eq(90000.0)
+    end
+  end
 end

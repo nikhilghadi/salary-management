@@ -32,4 +32,20 @@ class SalaryInsights
 
     { median_salary: median.to_f }
   end
+
+  def self.top_earners(country, limit = 5)
+    employees = Employee
+                  .where(country: country)
+                  .order(salary: :desc)
+                  .select(:id, :first_name, :last_name, :salary)
+                  .limit(limit)
+
+    employees.map do |employee|
+      {
+        id: employee.id,
+        name: employee.full_name,
+        salary: employee.salary.to_f
+      }
+    end
+  end
 end
