@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createEmployee, updateEmployee} from "../api/client";
-
+import { COUNTRIES, JOB_TITLES, DEPARTMENTS } from "../constants/options";
 export default function AddEmployeeModal({employee, onClose, onSuccess }) {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState([]);
@@ -55,22 +55,26 @@ export default function AddEmployeeModal({employee, onClose, onSuccess }) {
 
       
       <select onChange={e => setForm({...form, job_title: e.target.value})} value={form.job_title}>
-        <option>Engineer</option>
-        <option>Tester</option>
-        <option>Manager</option>
-        <option>Sales Executive</option>
-        <option>Marketing Head</option>
+          <option key="default" value="">Select Job Title</option>
+        {JOB_TITLES.map(j => (
+          <option key={j} value={j}>{j}</option>
+        ))}
       </select>
 
       <select onChange={e => setForm({...form, country: e.target.value})} value={form.country}>
-        <option>India</option>
-        <option>USA</option>
-        <option>China</option>
-        <option>Germany</option>
-        <option>Brazil</option>
+          <option key="default" value="">Select Country</option>
+        {COUNTRIES.map(c => (
+          <option key={c} value={c}>{c}</option>
+        ))}
       </select>
 
-      <input placeholder="Department" value={form.department} onChange={e => setForm({...form, department: e.target.value})} />
+      <select onChange={e => setForm({...form, department: e.target.value})} value={form.department}>
+          <option key="default" value="">Select Department</option>
+        {DEPARTMENTS.map(d => (
+          <option key={d} value={d}>{d}</option>
+        ))}
+      </select>
+
       <input placeholder="Branch Location" value={form.branch_location} onChange={e => setForm({...form, branch_location: e.target.value})} />
 
       <input type="number" placeholder="Salary" value={form.salary} onChange={e => setForm({...form, salary: e.target.value})} />

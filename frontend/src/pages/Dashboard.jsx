@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getCountryInsights, getJobInsights } from "../api/client";
+import { COUNTRIES, JOB_TITLES } from "../constants/options";
 
 export default function Dashboard() {
   const [country, setCountry] = useState("");
@@ -43,18 +44,19 @@ export default function Dashboard() {
 
       {/* Input Section */}
       <div style={{ marginBottom: "20px" }}>
-        <input
-          placeholder="Enter Country"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-        />
+        <select onChange={e => setCountry(e.target.value)} value={country}>
+          <option key="default" value="">Select Country</option>
+          {COUNTRIES.map(c => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
 
-        <input
-          placeholder="Enter Job Title"
-          value={jobTitle}
-          onChange={(e) => setJobTitle(e.target.value)}
-          style={{ marginLeft: "10px" }}
-        />
+      <select onChange={e => setJobTitle(e.target.value)} value={jobTitle}>
+        <option key="default" value="">Select Job Title</option>
+        {JOB_TITLES.map(j => (
+          <option key={j} value={j}>{j}</option>
+        ))}
+      </select>
 
         <button onClick={handleCountryInsights} style={{ marginLeft: "10px" }}>
           Country Insights
