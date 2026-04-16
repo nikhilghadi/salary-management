@@ -54,4 +54,17 @@ RSpec.describe "Employees API", type: :request do
 
     expect(response).to have_http_status(:not_found)
   end
+
+  describe "PUT /employees/:id" do
+    it "updates the employee" do
+      employee = create(:employee)
+
+      put "/employees/#{employee.id}", params: {
+        employee: { salary: 70000 }
+      }
+
+      expect(response).to have_http_status(:ok)
+      expect(employee.reload.salary).to eq(70000)
+    end
+  end
 end
