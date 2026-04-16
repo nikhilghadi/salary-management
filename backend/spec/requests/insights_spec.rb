@@ -53,4 +53,14 @@ RSpec.describe "Insights API", type: :request do
       expect(data["avg_salary"]).to eq(50000)
     end
   end
+
+  it "returns error when country and job_title params are missing" do
+    create(:employee, country: "India", salary: 30000)
+    create(:employee, country: "India", salary: 50000)
+    get "/insights/job_title"
+    expect(response).to have_http_status(:unprocessable_entity)
+
+    data = JSON.parse(response.body)
+    expect(data["error"]).to eq("country and job_title parameters are required")
+  end
 end
