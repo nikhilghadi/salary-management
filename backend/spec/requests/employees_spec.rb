@@ -79,4 +79,14 @@ RSpec.describe "Employees API", type: :request do
       expect(response).to have_http_status(:no_content)
     end
   end
+
+  it "returns error for invalid update" do
+    employee = create(:employee)
+
+    put "/employees/#{employee.id}", params: {
+      employee: { salary: -100 }
+    }
+
+    expect(response).to have_http_status(:unprocessable_entity)
+  end
 end
