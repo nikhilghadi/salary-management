@@ -8,7 +8,9 @@ class InsightsController < ApplicationController
   end
 
   def job_title
-
+    if params[:country].blank? || params[:job_title].blank?
+      return render json: { error: "country and job_title parameters are required" }, status: :unprocessable_entity
+    end
     avg_salary = SalaryInsights.for_job_title(params[:country], params[:job_title])
     render json: { avg_salary: avg_salary }
   end
