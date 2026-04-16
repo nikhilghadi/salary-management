@@ -1,8 +1,21 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :update, :destroy]
   def index
-    employees = Employee.all
-    render json: employees
+    page = params[:page].to_i || 1
+    per_page = params[:per_page].to_i || 10
+
+    page = 1 if page <= 0
+    per_page = 10 if per_page <= 0
+
+    employees = Employee
+                .offset((page - 1) * per_page)
+                .limit(per_page)
+    render json: {
+      data: employees,
+      page: page,
+      per_page: per_page,
+      total: Employee.count
+    }
   end
 
   def create

@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:3000";
 
-export async function fetchEmployees() {
-  const res = await fetch(`${BASE_URL}/employees`);
+export async function fetchEmployees(page=1) {
+  const res = await fetch(`${BASE_URL}/employees?page=${page}`);
   return res.json();
 }
 
