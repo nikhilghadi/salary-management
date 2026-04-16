@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   get "insights/job_title", to: "insights#job_title"
   get "insights/median_salary", to: "insights#median_salary"
   get "insights/top_earners", to: "insights#top_earners"
+  get "insights/department", to: "insights#department"
 end

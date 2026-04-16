@@ -48,4 +48,12 @@ class SalaryInsights
       }
     end
   end
+
+  def self.for_department(country)
+    employees = Employee.where(country: country)
+
+    departments = employees.group(:department).average(:salary)
+
+    departments.transform_values(&:to_f)
+  end
 end

@@ -95,4 +95,21 @@ RSpec.describe "Insights API", type: :request do
       expect(data.first["salary"]).to eq(90000.0)
     end
   end
+
+  describe "GET /insights/department" do
+    it "returns avg salary per department in a country" do
+      create(:employee, country: "India", department: "Engineering", salary: 50000)
+      create(:employee, country: "India", department: "Engineering", salary: 70000)
+      create(:employee, country: "India", department: "HR", salary: 30000)
+
+      get "/insights/department", params: { country: "India" }
+
+      expect(response).to have_http_status(:ok)
+
+      data = JSON.parse(response.body)
+
+      expect(data["Engineering"]).to eq(60000.0)
+      expect(data["HR"]).to eq(30000.0)
+    end
+  end
 end
