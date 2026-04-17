@@ -8,7 +8,7 @@ RSpec.describe "Employees API", type: :request do
       get "/employees"
 
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body).size).to eq(3)
+      expect(JSON.parse(response.body)["data"].size).to eq(3)
     end
   end
 
